@@ -11,7 +11,6 @@ let { data } = await supabase
     .from('items')
     .select('*')
 
-
 console.log(data)
 
 // C'est noël, pas de chrono, pas de pression et de l'entraide afin de réaliser les étapes ci-dessous :
@@ -80,3 +79,83 @@ console.log(data)
 
 // N'hésitez pas à tester toute autre bonne idée !
 
+let totalBasket = 0;
+let basket = document.createElement("div");
+basket.id = "basket";
+basket.innerText = `Mon panier: ${totalBasket}€`;
+
+app.innerHTML = `<p>Il y a ${data.length} produit${data.length > 1 ? 's' : ''} en base de donnée</p>`
+
+for(const ITEM of data){
+    let article = document.createElement("article");
+    let btnDelete = document.createElement("button");
+    btnDelete.classList = "btnDelete hide";
+    btnDelete.innerText = "X";
+    article.addEventListener("pointerenter", function(){
+        btnDelete.classList.toggle("hide");
+    });
+    article.addEventListener("pointerleave", function(){
+        btnDelete.classList.toggle("hide");
+    });
+    btnDelete.addEventListener("click", () => deleteArticle(ITEM.id));
+    
+    let articleName = document.createElement("h3");
+    articleName.innerText = ITEM.name;
+    
+    let button = document.createElement("button");
+    button.classList = "btnAddBasket";
+    button.innerText = "Ajouter au panier";
+    button.addEventListener("click", () => addToBasket(ITEM));
+
+    article.appendChild(articleName);
+    article.appendChild(btnDelete);
+    article.appendChild(button);
+
+    app.appendChild(article);
+}
+
+app.prepend(basket);
+
+function addToBasket(item){
+    totalBasket += item.price;
+    basket.innerText = `Mon panier: ${totalBasket}€`;
+}
+
+
+// Form to add article
+let form = document.createElement('div');
+form.id = "form";
+let labelName = document.createElement('label');
+labelName.setAttribute('for', 'labelName');
+labelName.innerText = "Nom du produit";
+let inputName = document.createElement('input');
+inputName.id = "labelName";
+let labelPrice = document.createElement('label');
+labelPrice.setAttribute('for', 'labelPrice');
+labelPrice.innerText = "Prix du produit";
+let inputPrice = document.createElement('input');
+inputPrice.id = "labelPrice";
+let submit = document.createElement("button");
+submit.innerText = "Ajouter un article";
+submit.addEventListener("click", () =>  addArticle(inputName.value, inputPrice.value));
+
+form.appendChild(labelName);
+form.appendChild(inputName);
+form.appendChild(labelPrice);
+form.appendChild(inputPrice);
+form.appendChild(submit);
+app.insertBefore(form, document.querySelector('p'));
+
+async function addArticle(name, price){
+    let {data, error} = await supabase.from('items').insert([
+        { name: name, price: price },
+    ]);
+
+    location.reload();
+}
+
+async function deleteArticle(id){
+    let {data, error} = await supabase.from('items').delete().eq('id', id);
+
+    location.reload();
+}

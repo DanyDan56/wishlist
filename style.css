@@ -6,3 +6,54 @@
   color: #2c3e50;
   margin-top: 60px;
 }
+
+#app #basket{
+  text-align: right;
+  margin-right: 50px;
+
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#app article{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 10px;
+}
+
+#app article .btnDelete{
+  height: 25px;
+  align-self: center;
+
+  border: none;
+  background-color: white;
+}
+
+#app article .hide{
+  display: none;
+}
+
+#app article .btnAddBasket{
+  /*width: 100%;*/
+}
+
+#app article h3{
+  width: 90%;
+
+  color: brown;
+}
+
+#app .btnPrice{
+  margin-left: 10px;
+}
+
+#app #form label, #app #form input{
+  margin-right: 10px;
+}
