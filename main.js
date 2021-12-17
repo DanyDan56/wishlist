@@ -136,6 +136,7 @@ labelPrice.innerText = "Prix du produit";
 let inputPrice = document.createElement('input');
 inputPrice.id = "labelPrice";
 let submit = document.createElement("button");
+submit.classList = "btnAddArticle";
 submit.innerText = "Ajouter un article";
 submit.addEventListener("click", () =>  addArticle(inputName.value, inputPrice.value));
 
